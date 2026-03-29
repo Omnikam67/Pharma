@@ -1,0 +1,95 @@
+from fastapi import APIRouter, HTTPException, UploadFile, File
+from langfuse import observe
+from app.services.product_service import ProductService
+from pydantic import BaseModel
+from app.services.translation_service import translate_texts, simplify_english
+
+router = APIRouter()
+service = ProductService()
+
+
+@router.get("/products")
+@observe(name="get_all_products")
+def get_products(english: bool = True):
+    # reload data so that recent orders/stock changes from other service instances are reflected
+    service.reload()
+    products = service.get_all_products()
+
+    if english:
+        descriptions = [str(p.get("description", "") or "") for p in products]
+        translated = translate_texts(descriptions, target="en")
+        for p, desc_en in zip(products, translated):
+            p["description_en"] = desc_en
+            p["description_simple_en"] = simplify_english(desc_en)
+
+    return products
+
+@router.get("/products/{product_name}")
+@observe(name="get_product_by_name")
+def get_product(product_name: str):
+    product = service.get_product_by_name(product_name)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@router.get("/admin/products")
+@observe(name="get_admin_products")
+def get_admin_products():
+    """Return complete product list for admins with translation and analysis."""
+    # ensure we have the latest values from disk
+    service.reload()
+    df = service.df
+    products = []
+    descriptions: list[str] = []
+    for _, row in df.iterrows():
+        item = {col: row.get(col) for col in df.columns}
+        desc = str(row.get("descriptions", ""))
+        descriptions.append(desc)
+        item["_raw_description"] = desc
+        products.append(item)
+
+    if products:
+        translated = translate_texts(descriptions, target="en")
+        for item, desc_en in zip(products, translated):
+            item["description_en"] = desc_en
+            item["description_simple_en"] = simplify_english(desc_en)
+            item.pop("_raw_description", None)
+
+    analysis = {
+        "total_products": len(df),
+        "average_price": float(df.get("price rec").mean()) if "price rec" in df.columns else 0,
+        "min_price": float(df.get("price rec").min()) if "price rec" in df.columns else 0,
+        "max_price": float(df.get("price rec").max()) if "price rec" in df.columns else 0,
+        "by_package_size": df.get("package size").value_counts().to_dict() if "package size" in df.columns else {},
+    }
+    return {"products": products, "analysis": analysis}
+
+
+@router.post("/admin/products/upload")
+async def upload_products(file: UploadFile = File(...)):
+    """Receive an Excel file from the admin UI and update inventory."""
+    if not file:
+        raise HTTPException(status_code=400, detail="No file provided")
+
+    try:
+        content = await file.read()
+        message = service.update_inventory_from_excel(content)
+        success = message.lower().startswith("success")
+        return {"success": success, "message": message}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to process file: {str(e)}")
+
+class ProductUpdate(BaseModel):
+    product_name: str | None = None
+    stock: int | None = None
+    price: float | None = None
+    prescription_required: bool | None = None
+
+@router.put("/admin/products/{product_id}")
+@observe(name="update_admin_product")
+def update_product(product_id: str, data: ProductUpdate):
+    success, message = service.update_product_details(product_id, data.model_dump(exclude_unset=True))
+    if not success:
+        raise HTTPException(status_code=400, detail=message)
+    return {"success": True, "message": message}

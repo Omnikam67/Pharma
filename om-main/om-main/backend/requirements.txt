@@ -1,0 +1,24 @@
+fastapi
+uvicorn
+pandas==2.3.3
+python-dotenv
+langchain
+langchain-openai
+langchain-community
+langchain-groq
+openai
+langfuse
+chromadb
+sentence-transformers
+openpyxl
+twilio
+httpx
+# Socket.IO for real-time updates
+python-socketio
+python-engineio
+aiofiles
+# Database
+sqlalchemy
+pymysql
+# explicitly pin a working numpy/pandas pair for Python 3.10
+numpy==1.23.5

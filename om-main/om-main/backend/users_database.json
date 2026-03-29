@@ -1,0 +1,102 @@
+{
+  "1b947601-e254-4bb6-9994-f634d62ffd09": {
+    "id": "1b947601-e254-4bb6-9994-f634d62ffd09",
+    "name": "om",
+    "phone": "1234567890",
+    "shop_id": null,
+    "password": "123456",
+    "age": 18,
+    "role": "user",
+    "created_at": "2026-03-09T18:53:38.375961"
+  },
+  "e13ca389-0f41-42d8-9250-4ff2121a3a6b": {
+    "id": "e13ca389-0f41-42d8-9250-4ff2121a3a6b",
+    "name": "k",
+    "phone": null,
+    "shop_id": "8830537695",
+    "password": "123456",
+    "age": null,
+    "role": "admin",
+    "created_at": "2026-03-09T18:54:21.202915"
+  },
+  "fc845a46-f7fa-4262-8cf5-2750e235812b": {
+    "id": "fc845a46-f7fa-4262-8cf5-2750e235812b",
+    "name": "jtu",
+    "phone": "8830537695",
+    "shop_id": null,
+    "password": "123456",
+    "age": 6,
+    "role": "user",
+    "created_at": "2026-03-09T19:02:39.468570"
+  },
+  "93d98edd-6862-4844-beb4-5b05625ff013": {
+    "id": "93d98edd-6862-4844-beb4-5b05625ff013",
+    "name": "gf",
+    "phone": null,
+    "shop_id": "87678711377",
+    "password": "123456",
+    "age": null,
+    "role": "admin",
+    "created_at": "2026-03-09T19:43:44.989369"
+  },
+  "b413cd56-c867-4797-aff3-bbbd464b9865": {
+    "id": "b413cd56-c867-4797-aff3-bbbd464b9865",
+    "name": "jug",
+    "phone": "87678711377",
+    "shop_id": null,
+    "password": "123456",
+    "age": 6,
+    "role": "user",
+    "created_at": "2026-03-09T19:44:33.100046"
+  },
+  "9f19e7cd-e65c-4c5a-b1d7-eb05e4b1597b": {
+    "id": "9f19e7cd-e65c-4c5a-b1d7-eb05e4b1597b",
+    "name": "om",
+    "phone": "8767811377",
+    "shop_id": null,
+    "password": "12345",
+    "age": 148,
+    "role": "user",
+    "created_at": "2026-03-10T09:19:26.880038"
+  },
+  "cd15b20b-c24a-4e69-9480-0c77dbcb1650": {
+    "id": "cd15b20b-c24a-4e69-9480-0c77dbcb1650",
+    "name": "PendingTester",
+    "phone": "555a553e3",
+    "shop_id": null,
+    "password": "pw",
+    "age": null,
+    "role": "user",
+    "created_at": "2026-03-10T21:19:25.210233"
+  },
+  "4f0485c0-d84b-432f-91df-00290ad4d72f": {
+    "id": "4f0485c0-d84b-432f-91df-00290ad4d72f",
+    "name": "new",
+    "phone": null,
+    "shop_id": "8767811377",
+    "password": "12345",
+    "age": null,
+    "role": "admin",
+    "created_at": "2026-03-14T23:09:42.456755"
+  },
+  "543324bd-6339-4edf-a7f5-15a9464f9e61": {
+    "id": "543324bd-6339-4edf-a7f5-15a9464f9e61",
+    "name": "om",
+    "phone": "9878787878",
+    "shop_id": null,
+    "password": "123456",
+    "age": 18,
+    "role": "user",
+    "created_at": "2026-03-15T23:42:16.277394"
+  },
+  "a6861f5f-a070-417d-879d-be8ba168b310": {
+    "id": "a6861f5f-a070-417d-879d-be8ba168b310",
+    "name": "om",
+    "phone": null,
+    "shop_id": "1",
+    "password": "123456",
+    "age": null,
+    "role": "admin",
+    "created_at": "2026-03-15T23:43:32.102810"
+  }
+}

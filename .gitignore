@@ -1,0 +1,14 @@
+.venv/
+venv/
+.vscode/
+
+**/.env
+**/.git.backup/
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.pyd
+**/*.db
+
+om-main/om-main/backend/.env
+om-main/om-main/frontend/.env
