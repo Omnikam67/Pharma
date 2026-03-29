@@ -20,5 +20,6 @@ aiofiles
 # Database
 sqlalchemy
 pymysql
+cryptography
 # explicitly pin a working numpy/pandas pair for Python 3.10
 numpy==1.23.5
