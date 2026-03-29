@@ -17,6 +17,7 @@ httpx
 python-socketio
 python-engineio
 aiofiles
+python-multipart
 # Database
 sqlalchemy
 pymysql
