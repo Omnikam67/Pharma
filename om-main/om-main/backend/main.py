@@ -10,9 +10,18 @@ from app.core import models  # Import to register core tables before init_db
 from app.core import doctor_models  # Import to create tables on startup
 from app.api import products, patients, orders, chat, refill, auth, nearby, report, doctor, delivery
 from app.services.product_service import ProductService
-from app.services.vector_store import index_products
 
 init_db()
+
+
+def _should_index_products_on_startup() -> bool:
+    configured = os.getenv("STARTUP_INDEX_PRODUCTS")
+    if configured is not None:
+        return configured.strip().lower() in {"1", "true", "yes", "on"}
+
+    # Render free instances are memory-constrained, so skip heavy vector indexing
+    # unless it is explicitly enabled.
+    return not bool(os.getenv("RENDER"))
 
 # ✅ LIFESPAN EVENT: Runs when server starts
 @asynccontextmanager
@@ -24,11 +33,16 @@ async def lifespan(app: FastAPI):
         service = ProductService()
         all_products = service.get_all_products()
         
-        # 2. Index them into Vector Store (ChromaDB)
-        if all_products:
-            index_products(all_products)
+        # 2. Index them into Vector Store (ChromaDB) only when explicitly enabled
+        if _should_index_products_on_startup():
+            if all_products:
+                from app.services.vector_store import index_products
+
+                index_products(all_products)
+            else:
+                print("No products found in Excel to index.")
         else:
-            print("No products found in Excel to index.")
+            print("Skipping startup vector indexing on this environment.")
             
     except Exception as e:
         print(f"Error during startup indexing: {e}")
